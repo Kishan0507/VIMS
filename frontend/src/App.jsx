@@ -3,10 +3,9 @@ import { BrowserRouter, Routes, Route,Link } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar'
 import GridBox from './components/Navbar/GridBox.jsx';
 import styles from './components/Navbar/GridBox.module.css';
-import PolicyPage from './components/PolicyForm.jsx';
-import VehiclePage from './components/VehicleForm.jsx';
-import OwnerPage from './components/OwnerForm.jsx';
-
+import PolicyPage from './Pages/PolicyPage/PolicyForm.jsx';
+import VehiclePage from './Pages/VehiclePage/VehicleForm.jsx';
+import OwnerPage from './Pages/OwnerPage/OwnerForm.jsx';
 function HomePage()  {
 
   const [theme,setTheme]=useState('light');

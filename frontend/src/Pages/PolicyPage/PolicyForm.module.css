@@ -1,8 +1,8 @@
 .pageContainer {
-    max-width: 900px;
-    margin: 20px auto;
+    max-width: 1000px;
+    margin: 40px auto;
     padding: 20px 30px;
-    background-color: #ced8ff;
+    background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -21,7 +21,6 @@
     text-align: center;
 }
 
-/* --- Add Policy Form --- */
 .addPolicyContainer {
     background-color: #ffffff;
     padding: 25px;
@@ -39,7 +38,7 @@
 
 .form {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px 20px;
 }
 
@@ -51,8 +50,8 @@
     font-size: 0.9rem;
 }
 
-.form .input,
-.form .select {
+.input,
+.select {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
@@ -62,14 +61,10 @@
     box-sizing: border-box;
 }
 
-.form .fullWidth {
+.submitButton {
     grid-column: 1 / -1;
-}
-
-.form .submitButton {
-    grid-column: 1 / -1; /* Button spans full width */
     padding: 12px 20px;
-    background-color: #007bff; /* Green for create */
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
@@ -80,8 +75,8 @@
     transition: background-color 0.2s ease-in-out;
 }
 
-.form .submitButton:hover {
-    background-color: #007bff;
+.submitButton:hover {
+    background-color: #0056b3;
 }
 
 /* --- Search Bar --- */
@@ -98,10 +93,10 @@
     box-sizing: border-box;
 }
 
-/* --- Policy List & Cards --- */
+
 .policyList {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
 }
 
@@ -113,13 +108,14 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    padding-top: 45px; /* Space for buttons */
 }
 
 .policyCard h2 {
     margin: 0;
     font-size: 1.2rem;
-    color: #007bff;
+    color: #333;
 }
 
 .policyCard p {
@@ -127,29 +123,30 @@
     color: #555;
 }
 
-.policyCard .status {
+.status {
     font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 0.8rem;
 }
 
-.status-active {
-    color: #28a745; /* Green */
-}
+.status-active { background-color: #28a745; }
+.status-expired { background-color: #6c757d; }
+.status-cancelled { background-color: #ffc107; color: #333; }
 
-.status-expired {
-    color: #dc3545; /* Red */
-}
-
-.status-cancelled {
-    color: #6c757d; /* Gray */
-}
-
-.deleteButton {
+.cardActions {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: #dc3545;
-    color: white;
+    display: flex;
+    gap: 8px;
+}
+
+.editButton, .deleteButton {
+    background: none;
     border: none;
+    color: white;
     border-radius: 50%;
     width: 28px;
     height: 28px;
@@ -162,7 +159,61 @@
     transition: background-color 0.2s;
 }
 
-.deleteButton:hover {
-    background-color: #c82333;
+.editButton { background-color: #17a2b8; }
+.editButton:hover { background-color: #138496; }
+
+.deleteButton { background: #dc3545; }
+.deleteButton:hover { background-color: #c82333; }
+
+
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.modalContent h2 {
+    margin-top: 0;
+}
+
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modalActions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.saveButton {
+    background-color: #28a745;
+    color: white;
+}
+
+.cancelButton {
+    background-color: #6c757d;
+    color: white;
 }
 

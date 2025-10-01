@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './OwnerForm.module.css';
 
-// --- SIMULATED DATABASE DATA (You can reuse this from your VehiclePage) ---
+
 const initialOwnersData = [
     { id: 1, name: 'Anjali Sharma', address: '123 MG Road, Bangalore', phone: '9876543210' },
     { id: 2, name: 'Rohan Mehta', address: '456 Park Street, Mumbai', phone: '8765432109' },
@@ -13,16 +13,16 @@ const initialVehiclesData = [
     { id: 2, vehicleNo: 'MH-12-CD-5678', model: 'Civic', ownerId: 2 },
     { id: 3, vehicleNo: 'TN-07-EF-9012', model: 'Fortuner', ownerId: 1 },
 ];
-// ----------------------------------------------------------------------
+
 
 const OwnerPage = () => {
-    // State for owners, vehicles, form, and search
+    
     const [owners, setOwners] = useState(initialOwnersData);
     const [vehicles, setVehicles] = useState(initialVehiclesData);
     const [searchQuery, setSearchQuery] = useState('');
     const [newOwner, setNewOwner] = useState({ name: '', address: '', phone: '' });
 
-    // --- LOGIC HANDLERS ---
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewOwner(prev => ({ ...prev, [name]: value }));
@@ -36,16 +36,16 @@ const OwnerPage = () => {
         }
         const newId = owners.length > 0 ? Math.max(...owners.map(o => o.id)) + 1 : 1;
         setOwners(prev => [...prev, { ...newOwner, id: newId }]);
-        setNewOwner({ name: '', address: '', phone: '' }); // Reset form
+        setNewOwner({ name: '', address: '', phone: '' }); 
     };
 
     const handleDeleteOwner = (ownerId) => {
-        // Also remove vehicles associated with this owner to prevent orphaned data
+        
         setVehicles(prev => prev.filter(v => v.ownerId !== ownerId));
         setOwners(prev => prev.filter(o => o.id !== ownerId));
     };
     
-    // --- FILTERING LOGIC ---
+    
     const filteredOwners = owners.filter(owner =>
         owner.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         owner.phone.includes(searchQuery)
@@ -55,7 +55,7 @@ const OwnerPage = () => {
         <div className={styles.pageContainer}>
             <div className={styles.header}><h1>Owner Management</h1></div>
 
-            {/* Add Owner Form */}
+            
             <div className={styles.addOwnerContainer}>
                 <h2>Add New Owner</h2>
                 <form onSubmit={handleAddOwner} className={styles.form}>
@@ -66,7 +66,7 @@ const OwnerPage = () => {
                 </form>
             </div>
 
-            {/* Search Bar */}
+            
             <div className={styles.searchContainer}>
                 <input
                     type="text"
@@ -77,10 +77,10 @@ const OwnerPage = () => {
                 />
             </div>
 
-            {/* Owner List */}
+        
             <div className={styles.ownerList}>
                 {filteredOwners.map(owner => {
-                    // Find vehicles for the current owner
+                    
                     const ownersVehicles = vehicles.filter(v => v.ownerId === owner.id);
                     return (
                         <div key={owner.id} className={styles.ownerCard}>

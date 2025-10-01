@@ -21,8 +21,8 @@
     text-align: center;
 }
 
-/* --- Add Owner Form --- */
-.addOwnerContainer {
+
+.formContainer {
     background-color: #ffffff;
     padding: 25px;
     border-radius: 8px;
@@ -30,7 +30,7 @@
     margin-bottom: 30px;
 }
 
-.addOwnerContainer h2 {
+.formContainer h2 {
     margin-top: 0;
     margin-bottom: 20px;
     text-align: center;
@@ -61,12 +61,12 @@
     box-sizing: border-box;
 }
 
-.form .addressInput {
-    grid-column: 1 / -1; /* Address spans full width */
+.form .fullWidth {
+    grid-column: 1 / -1;
 }
 
 .form .submitButton {
-    grid-column: 1 / -1; /* Button spans full width */
+    grid-column: 1 / -1;
     padding: 12px 20px;
     background-color: #007bff;
     color: white;
@@ -83,7 +83,8 @@
     background-color: #0056b3;
 }
 
-/* --- Search Bar --- */
+
+
 .searchContainer {
     margin-bottom: 25px;
 }
@@ -97,34 +98,33 @@
     box-sizing: border-box;
 }
 
-/* --- Owner List & Cards --- */
-.ownerList {
+
+.vehicleList {
     display: grid;
-    grid-template-columns: 1fr; /* Each card takes a full row */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
 }
 
-.ownerCard {
+.vehicleCard {
     position: relative;
     background-color: #ffffff;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-    transition: box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.ownerCard:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.ownerInfo h2 {
-    margin: 0 0 10px 0;
+.vehicleCard h2 {
+    margin: 0;
+    font-size: 1.2rem;
     color: #333;
 }
 
-.ownerInfo p {
-    margin: 4px 0;
-    color: #666;
+.vehicleCard p {
+    margin: 0;
+    color: #555;
 }
 
 .deleteButton {
@@ -148,31 +148,5 @@
 
 .deleteButton:hover {
     background-color: #c82333;
-}
-
-/* --- Nested Vehicle List --- */
-.vehiclesSection {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #eee;
-}
-
-.vehiclesSection h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.1rem;
-    color: #007bff;
-}
-
-.vehicleItem {
-    padding: 8px;
-    border-radius: 4px;
-    margin-bottom: 5px;
-    background-color: #f8f9fa;
-    font-size: 0.9rem;
-}
-
-.noVehicles {
-    color: #888;
-    font-style: italic;
 }
 

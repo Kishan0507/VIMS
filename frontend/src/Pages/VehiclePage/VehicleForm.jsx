@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import styles from './Vehicle.module.css';
 
-// --- SIMULATED DATABASE DATA (This should eventually come from your backend) ---
-// Note: We're now storing the owner's name directly with the vehicle.
 const initialVehiclesData = [
     { id: 1, vehicleNo: 'KA-01-AB-1234', model: 'Camry', year: 2021, vin: 'VIN123ABC', ownerName: 'John Doe' },
     { id: 2, vehicleNo: 'MH-12-CD-5678', model: 'Civic', year: 2022, vin: 'VIN456DEF', ownerName: 'Jane Smith' },
     { id: 3, vehicleNo: 'TN-07-EF-9012', model: 'Fortuner', year: 2020, vin: 'VIN789GHI', ownerName: 'John Doe' },
 ];
-// ----------------------------------------------------------------------
+
 
 const VehiclePage = () => {
     const [vehicles, setVehicles] = useState(initialVehiclesData);
@@ -18,11 +16,10 @@ const VehiclePage = () => {
         model: '',
         year: '',
         vin: '',
-        ownerName: '' // Changed from ownerId to ownerName
+        ownerName: '' 
     });
 
-    // --- LOGIC HANDLERS ---
-    const handleInputChange = (e) => {
+      const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewVehicle(prev => ({ ...prev, [name]: value }));
     };
@@ -35,7 +32,7 @@ const VehiclePage = () => {
         }
         const newId = vehicles.length > 0 ? Math.max(...vehicles.map(v => v.id)) + 1 : 1;
         setVehicles(prev => [...prev, { ...newVehicle, id: newId }]);
-        // Reset form
+        
         setNewVehicle({ vehicleNo: '', model: '', year: '', vin: '', ownerName: '' });
     };
 
@@ -43,7 +40,7 @@ const VehiclePage = () => {
         setVehicles(prev => prev.filter(v => v.id !== vehicleId));
     };
 
-    // --- FILTERING LOGIC ---
+    
     const filteredVehicles = vehicles.filter(vehicle => {
         const ownerName = vehicle.ownerName.toLowerCase();
         const vehicleNo = vehicle.vehicleNo.toLowerCase();
@@ -55,7 +52,7 @@ const VehiclePage = () => {
         <div className={styles.pageContainer}>
             <div className={styles.header}><h1>Vehicle Management</h1></div>
 
-            {/* Add Vehicle Form */}
+            
             <div className={styles.formContainer}>
                 <h2>Add New Vehicle</h2>
                 <form onSubmit={handleAddVehicle} className={styles.form}>
@@ -78,7 +75,7 @@ const VehiclePage = () => {
                 </form>
             </div>
 
-            {/* Search Bar */}
+            
             <div className={styles.searchContainer}>
                 <input
                     type="text"
@@ -89,7 +86,7 @@ const VehiclePage = () => {
                 />
             </div>
 
-            {/* Vehicle List */}
+            
             <div className={styles.vehicleList}>
                 {filteredVehicles.map(vehicle => (
                     <div key={vehicle.id} className={styles.vehicleCard}>
