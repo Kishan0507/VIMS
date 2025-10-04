@@ -8,6 +8,7 @@
 /frontend/dist
 /frontend/build
 /frontend/coverage
+/backend/
 
 # -----------------------------------------------
 # Backend specific ignores (Python/Django)
