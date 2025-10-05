@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vehicle Insurance Management System</title>
+    <title>VIMS Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-gray-100 text-gray-800 flex flex-col h-full">
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
 
     <!-- Navbar -->
-    <header class="bg-white shadow-sm flex-shrink-0">
-        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-             <a href="#" class="nav-link" data-page="home">
+    <header class="bg-white shadow-sm">
+        <nav class="container mx-auto px-6 py-6 flex justify-between items-center">
+             <a href="index.html">
                 <div class="flex items-center space-x-2">
                      <svg class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -23,144 +20,45 @@
                 </div>
             </a>
             <div class="hidden md:flex items-center space-x-8">
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium nav-link" data-page="home">Home</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">About Us</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Login</a>
+                <a href="index.html" class="text-black hover:text-blue-600 font-medium">Home</a>
+                <a href="#" class="text-black hover:text-blue-600 font-medium">About Us</a>
+                <a href="#" class="text-black hover:text-blue-600 font-medium">Login</a>
             </div>
-            <div class="relative">
+             <div class="relative">
                 <input type="text" class="bg-gray-200 text-gray-800 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search...">
-                <svg class="h-5 w-5 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                 <svg class="h-5 w-5 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
             </div>
         </nav>
     </header>
 
-    <!-- This main tag now correctly grows to fill the remaining space -->
-    <main class="container mx-auto p-6 flex-grow">
-        <!-- Error Banner -->
-        <div id="error-banner" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-md" role="alert">
-            <p class="font-bold">Connection Error</p>
-            <p>Could not connect to the backend server. Please ensure the Django server is running and accessible.</p>
-        </div>
-
-        <!-- Home Page (Dashboard) -->
-        <div id="home-page" class="page active h-full">
-            <div class="bg-blue-100 p-8 rounded-lg h-full flex items-center">
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-8 w-full">
-                    <!-- Dashboard Cards -->
-                    <div class="bg-gray-50 p-16 rounded-lg shadow-sm text-center cursor-pointer nav-link" data-page="owners">
-                        <a href="#" class="text-lg font-medium text-blue-800 border border-blue-800 rounded-md px-4 py-2 inline-block">owner</a>
-                    </div>
-                    <div class="bg-gray-50 p-16 rounded-lg shadow-sm text-center cursor-pointer nav-link" data-page="vehicles">
-                        <a href="#" class="text-lg font-medium text-blue-800 border border-blue-800 rounded-md px-4 py-2 inline-block">vehicle</a>
-                    </div>
-                    <div class="bg-gray-50 p-16 rounded-lg shadow-sm text-center cursor-pointer nav-link" data-page="policies">
-                        <a href="#" class="text-lg font-medium text-blue-800 border border-blue-800 rounded-md px-4 py-2 inline-block">policies</a>
-                    </div>
-                    <div class="bg-gray-50 p-16 rounded-lg shadow-sm text-center cursor-pointer nav-link" data-page="home">
-                         <a href="#" class="text-lg font-medium text-blue-800 border border-blue-800 rounded-md px-4 py-2 inline-block">accidents</a>
-                    </div>
-                    <div class="bg-gray-50 p-16 rounded-lg shadow-sm text-center cursor-pointer nav-link" data-page="home">
-                         <a href="#" class="text-lg font-medium text-blue-800 border border-blue-800 rounded-md px-4 py-2 inline-block">payment</a>
-                    </div>
-                     <div class="bg-gray-50 p-16 rounded-lg shadow-sm text-center cursor-pointer nav-link" data-page="home">
-                         <a href="#" class="text-lg font-medium text-blue-800 border border-blue-800 rounded-md px-4 py-2 inline-block">news</a>
-                    </div>
-                </div>
+    <!-- Main Content -->
+    <main class="flex-grow flex">
+        <div class="bg-blue-100 w-full p-6 sm:p-12 flex items-center justify-center">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-7xl">
+                <!-- Dashboard Cards -->
+                <a href="owners.html" class="bg-white p-16 rounded-lg shadow-sm text-center flex items-center justify-center hover:shadow-lg transition-shadow">
+                    <span class="text-lg font-medium text-blue-800 border border-blue-800 rounded-md px-4 py-2">owner</span>
+                </a>
+                <a href="vehicles.html" class="bg-white p-16 rounded-lg shadow-sm text-center flex items-center justify-center hover:shadow-lg transition-shadow">
+                    <span class="text-lg font-medium text-blue-800 border border-blue-800 rounded-md px-4 py-2">vehicle</span>
+                </a>
+                <a href="policies.html" class="bg-white p-16 rounded-lg shadow-sm text-center flex items-center justify-center hover:shadow-lg transition-shadow">
+                    <span class="text-lg font-medium text-blue-800 border border-blue-800 rounded-md px-4 py-2">policies</span>
+                </a>
+                <a href="accidents.html" class="bg-white p-16 rounded-lg shadow-sm text-center flex items-center justify-center hover:shadow-lg transition-shadow">
+                     <span class="text-lg font-medium text-blue-800 border border-blue-800 rounded-md px-4 py-2">accidents</span>
+                </a>
+                <a href="payment.html" class="bg-white p-16 rounded-lg shadow-sm text-center flex items-center justify-center hover:shadow-lg transition-shadow">
+                     <span class="text-lg font-medium text-blue-800 border border-blue-800 rounded-md px-4 py-2">payment</span>
+                </a>
+                 <a href="news.html" class="bg-white p-16 rounded-lg shadow-sm text-center flex items-center justify-center hover:shadow-lg transition-shadow">
+                     <span class="text-lg font-medium text-blue-800 border border-blue-800 rounded-md px-4 py-2">news</span>
+                </a>
             </div>
-        </div>
-
-        <!-- Owners Page -->
-        <div id="owners-page" class="page">
-             <div class="flex justify-between items-center mb-6">
-                <h1 class="text-3xl font-bold">Owner Management</h1>
-                <a href="#" class="text-blue-600 hover:underline nav-link font-medium" data-page="home">&larr; Back to Dashboard</a>
-            </div>
-            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h2 class="text-xl font-semibold mb-4">Add New Owner</h2>
-                <form id="add-owner-form" class="space-y-4">
-                    <div>
-                        <label for="owner-fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
-                        <input type="text" id="owner-fullName" class="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
-                    </div>
-                    <div>
-                        <label for="owner-address" class="block text-sm font-medium text-gray-700">Address</label>
-                        <input type="text" id="owner-address" class="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
-                    </div>
-                    <div>
-                        <label for="owner-phoneNumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
-                        <input type="text" id="owner-phoneNumber" class="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
-                    </div>
-                    <div class="flex justify-end pt-2">
-                        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-700 transition duration-150 ease-in-out">Add Owner</button>
-                    </div>
-                </form>
-            </div>
-            <div id="owners-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-        </div>
-
-        <!-- Vehicles Page -->
-        <div id="vehicles-page" class="page">
-             <div class="flex justify-between items-center mb-6">
-                <h1 class="text-3xl font-bold">Vehicle Management</h1>
-                <a href="#" class="text-blue-600 hover:underline nav-link font-medium" data-page="home">&larr; Back to Dashboard</a>
-            </div>
-             <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-                 <h2 class="text-xl font-semibold mb-4">Add New Vehicle</h2>
-                 <form id="add-vehicle-form" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                     <input type="text" id="vehicle-vehicle_no" placeholder="Vehicle No (e.g., KA-01-AB-1234)" class="p-2 border rounded-md" required>
-                     <input type="text" id="vehicle-model" placeholder="Model (e.g., Camry)" class="p-2 border rounded-md" required>
-                     <input type="number" id="vehicle-year" placeholder="Year" class="p-2 border rounded-md" required>
-                     <input type="text" id="vehicle-vin" placeholder="VIN (17 chars)" class="p-2 border rounded-md" required>
-                     <select id="vehicle-owner" class="p-2 border rounded-md" required>
-                        <option value="">Select Owner</option>
-                     </select>
-                     <button type="submit" class="md:col-span-2 bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700">Add Vehicle</button>
-                 </form>
-             </div>
-             <div id="vehicles-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-        </div>
-
-        <!-- Policies Page -->
-        <div id="policies-page" class="page">
-            <div class="flex justify-between items-center mb-6">
-                <h1 class="text-3xl font-bold">Policy Management</h1>
-                <a href="#" class="text-blue-600 hover:underline nav-link font-medium" data-page="home">&larr; Back to Dashboard</a>
-            </div>
-             <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-                 <h2 class="text-xl font-semibold mb-4">Create New Policy</h2>
-                 <form id="add-policy-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                     <input type="text" id="policy-policy_no" placeholder="Policy No" class="p-2 border rounded-md" required>
-                     <select id="policy-vehicle" class="p-2 border rounded-md" required>
-                        <option value="">Select Vehicle</option>
-                     </select>
-                     <input type="date" id="policy-start_date" placeholder="Start Date" class="p-2 border rounded-md" required>
-                     <input type="date" id="policy-end_date" placeholder="End Date" class="p-2 border rounded-md" required>
-                     <input type="number" id="policy-amount" placeholder="Premium Amount" class="p-2 border rounded-md" required>
-                     <select id="policy-status" class="p-2 border rounded-md" required>
-                        <option value="active">Active</option>
-                        <option value="expired">Expired</option>
-                        <option value="cancelled">Cancelled</option>
-                     </select>
-                     <button type="submit" class="lg:col-span-3 bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700">Create Policy</button>
-                 </form>
-             </div>
-             <div id="policies-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
     </main>
-
-    <!-- Generic Edit Modal -->
-    <div id="edit-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h2 id="edit-modal-title" class="text-2xl font-bold mb-4">Edit Item</h2>
-            <form id="edit-form"></form>
-            <div class="mt-6 flex justify-end space-x-3">
-                <button id="cancel-edit-button" type="button" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md font-semibold hover:bg-gray-300">Cancel</button>
-                <button id="save-edit-button" type="submit" form="edit-form" class="bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700">Save Changes</button>
-            </div>
-        </div>
-    </div>
     
     <script src="js/script.js"></script>
 </body>
