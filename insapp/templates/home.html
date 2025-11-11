@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vehicle Insurance Management System - DBMS Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <style>
+    /* Paste the CSS from the next section here */
+    :root {
+      --background-dark: #1e2531;
+      --surface-card: #28303e;
+      --primary-color: #4a90e2; /* Soft Blue */
+      --primary-hover: #5a9eef;
+      --accent-color: #f7a312; /* Warm Gold */
+      --text-light: #e0e6f1;
+      --text-dark: #1e2531;
+      --shadow-subtle: 0 4px 15px rgba(0, 0, 0, 0.2);
+      --spacing-base: 20px;
+    }
+
+    /* Base Styles & Typography */
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      /* Soft Gradient Background */
+      background: linear-gradient(145deg, var(--background-dark) 0%, #171d27 100%);
+      color: var(--text-light);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Navbar Refactor: Glassmorphism and better mobile layout */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem var(--spacing-base);
+      background: rgba(40, 48, 62, 0.85); /* Semi-transparent card surface */
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-subtle);
+      transition: background 0.3s ease;
+    }
+
+    .logo {
+      font-size: 1.8em;
+      font-weight: 800;
+      color: var(--accent-color);
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-light);
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 6px;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-color);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Modern Button Style */
+    .btn, .btn-link {
+      background: var(--primary-color);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transform: translateZ(0); /* Hardware acceleration */
+    }
+
+    .btn:hover, .btn-link:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Primary CTA Button */
+    #loginBtn, .btn-link {
+      background: linear-gradient(90deg, var(--primary-color) 0%, #3a75c4 100%);
+    }
+
+    /* Hero Section */
+    header {
+      text-align: center;
+      padding: 60px var(--spacing-base) 40px;
+      animation: fadeIn 1s ease-out forwards;
+      opacity: 0;
+    }
+
+    header h1 {
+      font-size: clamp(2.5em, 5vw, 4em); /* Fluid sizing */
+      margin: 0;
+      font-weight: 900;
+      /* Text gradient for professional look */
+      background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+    }
+
+    header p {
+      margin-top: 10px;
+      font-size: clamp(1em, 2vw, 1.25em);
+      opacity: 0.8;
+    }
+
+    /* Main Content Wrapper for Layout */
+    .content-wrapper {
+      flex-grow: 1;
+      padding: 0 var(--spacing-base);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    /* Project Overview Card */
+    .project-box {
+      /* Soft Surface Card Style */
+      background: var(--surface-card);
+      border-radius: 15px;
+      max-width: 900px;
+      width: 100%;
+      margin: 20px 0 60px;
+      padding: 40px 30px;
+      box-shadow: var(--shadow-subtle);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .project-box.show, header.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .project-box:hover {
+      transform: translateY(-5px) scale(1.005);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .project-box h2 {
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      font-size: 2em;
+      font-weight: 700;
+    }
+
+    .project-box > p {
+      font-size: 1.1em;
+      opacity: 0.95;
+    }
+
+    /* Description Section (Animated Toggle) */
+    .description {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s ease-in-out, margin-top 0.6s ease-in-out;
+      text-align: left;
+      margin-top: 0;
+      padding-top: 0;
+      line-height: 1.8;
+      color: var(--text-light);
+    }
+
+    .description.show {
+      max-height: 600px; /* Large enough to accommodate content */
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .description p {
+      margin-bottom: 1em;
+    }
+
+    .description strong {
+      color: var(--accent-color);
+      font-weight: 700;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    /* Footer */
+    footer {
+      padding: 25px var(--spacing-base);
+      background: rgba(40, 48, 62, 0.85);
+      font-size: 0.9em;
+      text-align: center;
+      color: #aeb5c2;
+      letter-spacing: 0.5px;
+    }
+
+    footer span {
+      color: var(--primary-color);
+    }
+
+    /* ---
+    RESPONSIVENESS (Mobile-first with Flexbox/Grid principles)
+    --- 
+    */
+
+    /* Tablet/Small Desktop Layout */
+    @media (min-width: 768px) {
+      /* Improve spacing on larger screens */
+      nav {
+        padding: 1rem 40px;
+      }
+      .content-wrapper {
+        padding: 0 40px;
+      }
+      header {
+        padding: 80px 40px 60px;
+      }
+      .project-box {
+        margin: 40px 0 80px;
+      }
+    }
+
+    /* Mobile Layout */
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 20px;
+      }
+
+      .nav-links {
+        width: 100%;
+        margin-top: 10px;
+        justify-content: space-around;
+        gap: 8px; /* Reduced gap */
+      }
+
+      nav a, .btn, .btn-link {
+        font-size: 0.9em;
+        padding: 6px 10px;
+      }
+      
+      .btn-link {
+        min-width: 100px; /* Ensure buttons are clickable */
+      }
+      
+      header {
+        padding: 40px 15px 30px;
+      }
+
+      .project-box {
+        padding: 30px 20px;
+      }
+
+      .button-group {
+        flex-direction: column; /* Stack buttons on mobile */
+      }
+      
+      button, .btn-link {
+        width: 100%; /* Full width buttons */
+        max-width: 300px;
+      }
+    }
+    
+    /* Global Fade-In Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+{% load static %}
+{% block content %}
+  <nav>
+    <div class="logo">DBMS Project</div>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+      <a href="/login/" id="loginBtn" class="btn">Login</a>
+      <a href="/logout/" id="logoutBtn" class="btn" style="display:none;">Logout</a>
+    </div>
+  </nav>
+
+  <header class="js-fade-in">
+    <h1>Welcome to the DBMS Project</h1>
+    <p>Vehicle Insurance Management System</p>
+  </header>
+
+  <div class="content-wrapper">
+    <main>
+      <div class="project-box js-fade-in">
+        <h2>Project Overview</h2>
+        <p>Manage vehicle insurance details efficiently with a robust, data-driven system.</p>
+
+        <div class="button-group">
+          <button onclick="toggleDescription()">Read More</button>
+          <a href="/login/" class="btn-link">Explore the System</a>
+        </div>
+
+        <div class="description" id="desc">
+          <p>
+            The <strong>Vehicle Insurance Management System</strong> is designed to store and manage
+            vehicle, owner, and insurance information efficiently using database management principles.
+          </p>
+          <p>
+            It provides features like <strong>policy registration, renewal tracking, payment logs, accident history</strong>,
+            and more — enabling insurance companies to deliver better customer service while maintaining
+            secure and reliable data handling.
+          </p>
+          <p>
+            This DBMS-based system highlights how databases power real-world applications with
+            data integrity, optimized queries, and centralized management.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+
+  <footer>
+    &copy; <span id="year"></span> Vehicle Insurance Management System (DBMS Project). All rights reserved.
+  </footer>
+{% endblock content %}
+
+  <script>
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Toggle description animation
+    function toggleDescription() {
+      const desc = document.getElementById('desc');
+      desc.classList.toggle('show');
+      const button = event.target;
+      button.textContent = desc.classList.contains('show') ? 'Read Less' : 'Read More';
+    };
+
+    // Improved Fade-in on scroll/load for .js-fade-in elements
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target); // Stop observing once visible
+        }
+      });
+    }, {
+      threshold: 0.1, // Trigger when 10% of element is visible
+    });
+
+    document.querySelectorAll('.js-fade-in').forEach(el => observer.observe(el));
+    
+    // NOTE: Django templates handle 'login/logout' state, so the JS logic for the buttons is simplified here.
+  </script>
+</body>
+</html>

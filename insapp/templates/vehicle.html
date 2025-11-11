@@ -1,0 +1,304 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vehicle Management - VIMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- VIMS Enhanced Light Theme Variables --- */
+        :root {
+            --primary-dark: #1f2937; /* Dark Slate for text */
+            --primary-accent: #1579E7; /* Stronger, more vibrant blue */
+            --primary-hover: #115FBC; /* Darker on hover */
+            --background-base: #f7f7f9; /* Soft background */
+            --card-surface: #ffffff;
+            --shadow-subtle: 0 6px 20px rgba(0, 0, 0, 0.08); /* Slightly deeper shadow */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-base);
+            color: var(--primary-dark);
+        }
+
+        /* --- Custom Components --- */
+        .card-panel {
+            background-color: var(--card-surface);
+            padding: 2.5rem;
+            border-radius: 1rem; /* Slightly more rounded */
+            box-shadow: var(--shadow-subtle);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-panel:hover {
+            transform: translateY(-4px); /* Noticeable lift */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Input Focus Ring Enhancement */
+        .form-input-focus {
+            transition: all 0.3s ease;
+            border-color: #d1d5db;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .form-input-focus:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 3px rgba(21, 121, 231, 0.25); /* Subtle but distinct blue focus */
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Call-to-action Button Style */
+        .btn-cta {
+            background-color: var(--primary-accent);
+            color: white;
+            padding: 0.75rem 2rem; /* Larger padding */
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(21, 121, 231, 0.4);
+        }
+        .btn-cta:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(21, 121, 231, 0.6);
+        }
+        
+        /* Table Styles Enhancement */
+        .data-table th {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            background-color: #EBF4FF; /* Very light, professional blue header */
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: #fcfdfe; /* Very slight striping */
+        }
+        
+        .data-table tr:hover {
+            background-color: #E0F2FF !important; /* Brighter row hover */
+        }
+
+        /* Fade-in Animation */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <header class="bg-white shadow-lg">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/explore/" class="flex items-center space-x-3">
+                <svg class="h-9 w-9 text-[var(--primary-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span class="text-2xl font-extrabold text-[var(--primary-dark)]">VIMS</span>
+            </a>
+            <a href="/explore/" class="text-md text-[var(--primary-accent)] hover:text-[var(--primary-hover)] font-semibold transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-6 md:p-10">
+        {% if messages %}
+        <div class="mb-8 fade-in message-container">
+            {% for message in messages %}
+                <div class="card-panel border-l-4 p-4 mb-2 rounded-lg message-card {% if message.tags == 'success' %}border-green-500 bg-green-100 text-green-800{% elif message.tags == 'error' %}border-red-500 bg-red-100 text-red-800{% else %}border-blue-500 bg-blue-100 text-blue-800{% endif %}" style="box-shadow: none;">
+                    <p class="font-medium flex items-center gap-3">
+                        {% if message.tags == 'success' %}<i class="fa-solid fa-circle-check text-xl"></i>{% elif message.tags == 'error' %}<i class="fa-solid fa-circle-xmark text-xl"></i>{% else %}<i class="fa-solid fa-circle-info text-xl"></i>{% endif %}
+                        <span class="text-base">{{ message }}</span>
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="card-panel mb-10 fade-in" style="animation-delay: 0.1s;">
+            <h2 class="text-3xl font-extrabold text-[var(--primary-accent)] mb-8 border-b border-gray-200 pb-4">
+                <i class="fa-solid fa-car mr-3"></i> {% if editing_vehicle %}Edit Vehicle Details{% else %}Register New Vehicle{% endif %}
+            </h2>
+            <form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {% csrf_token %}
+                {% if editing_vehicle %}
+                  <input type="hidden" name="vehicle_id" value="{{ editing_vehicle.id }}" />
+                {% endif %}
+                
+                <div>
+                    <label for="vehicle-type" class="form-label">Vehicle Type</label>
+                    <select id="vehicle-type" name="vehicle_type" class="form-input form-input-focus" required onchange="updateTitle()">
+                        <option value="">Select type</option>
+                        {% for type in vehicle_types %}
+                          <option value="{{ type }}" {% if editing_vehicle.vehicle_type == type %}selected{% endif %}>{{ type }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="vehicle-title" class="form-label">Title (Auto)</label>
+                    <input type="text" id="vehicle-title" name="title"
+                           class="form-input form-input-focus bg-gray-100 text-gray-600 cursor-not-allowed"
+                           value="{{ editing_vehicle.title|default:'' }}"
+                           placeholder="Auto-filled based on type" readonly required />
+                </div>
+
+                <div>
+                    <label for="vehicle-number" class="form-label">Vehicle Number</label>
+                    <input type="text" id="vehicle-number" name="vehicle_number"
+                           class="form-input form-input-focus"
+                           value="{{ editing_vehicle.vehicle_number|default:'' }}"
+                           pattern="^[A-Z]{2}-\d{2}-[A-Z]{1,2}-\d{4}$"
+                           placeholder="e.g., KA-03-A-2882" required />
+                </div>
+
+                <div>
+                    <label for="model-name" class="form-label">Model Name</label>
+                    <input type="text" id="model-name" name="model_name"
+                           class="form-input form-input-focus"
+                           value="{{ editing_vehicle.model_name|default:'' }}"
+                           placeholder="e.g., Toyota Fortuner" required />
+                </div>
+
+                <div>
+                    <label for="model-year" class="form-label">Model Year</label>
+                    <input type="number" 
+                           id="model-year" 
+                           name="model_year"
+                           class="form-input form-input-focus"
+                           value="{{ editing_vehicle.model_year|default:'' }}" 
+                           placeholder="YYYY (e.g., 2023)" 
+                           min="1900" 
+                           max="{% now 'Y' %}" 
+                           required />
+                </div>
+
+                <div>
+                    <label for="vin" class="form-label">VIN (10 Characters)</label>
+                    <input type="text" id="vin" name="vin"
+                           class="form-input form-input-focus"
+                           value="{{ editing_vehicle.vin|default:'' }}"
+                           maxlength="10" minlength="10"
+                           placeholder="10-character VIN" required />
+                </div>
+
+                <div class="md:col-span-3">
+                    <label for="owner" class="form-label">Owner</label>
+                    <select id="owner" name="owner" class="form-input form-input-focus" required>
+                        <option value="">Select an owner</option>
+                        {% for owner in owners %}
+                          <option value="{{ owner.id }}" {% if editing_vehicle.owner.id == owner.id %}selected{% endif %}>{{ owner.owner }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="md:col-span-3 flex justify-end pt-4 space-x-3">
+                    {% if editing_vehicle %}
+                      <a href="/vehicles/" class="btn-secondary-cancel text-gray-700 hover:bg-gray-200 py-3 px-6 rounded-lg font-medium transition duration-300 flex items-center gap-2">
+                        <i class="fa-solid fa-times"></i> Cancel Edit
+                      </a>
+                      <button type="submit" class="btn-cta py-3 px-6 transition duration-300 flex items-center gap-2">
+                          <i class="fa-solid fa-car-side"></i> Update Vehicle
+                      </button>
+                    {% else %}
+                      <button type="submit" class="btn-cta py-3 px-6 transition duration-300 flex items-center gap-2">
+                          <i class="fa-solid fa-plus-circle"></i> Add Vehicle
+                      </button>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+
+        <div class="card-panel fade-in" style="animation-delay: 0.2s;">
+            <h2 class="text-3xl font-extrabold text-[var(--primary-dark)] mb-8 border-b border-gray-200 pb-4">
+                <i class="fa-solid fa-table-list mr-3"></i> Registered Vehicle List
+            </h2>
+            {% if vehicles %}
+            <div class="overflow-x-auto rounded-xl border border-gray-200 shadow-md">
+                <table class="min-w-full divide-y divide-gray-200 data-table text-base">
+                    <thead class="text-sm uppercase tracking-wider text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-bold">Title</th>
+                            <th class="px-4 py-3 text-left font-bold hidden sm:table-cell">Type</th>
+                            <th class="px-4 py-3 text-left font-bold">Number</th>
+                            <th class="px-4 py-3 text-left font-bold hidden md:table-cell">Model</th>
+                            <th class="px-4 py-3 text-left font-bold hidden lg:table-cell">VIN</th>
+                            <th class="px-4 py-3 text-left font-bold hidden sm:table-cell">Owner</th>
+                            <th class="px-4 py-3 text-center font-bold">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        {% for v in vehicles %}
+                        <tr>
+                            <td class="px-4 py-3 font-semibold text-[var(--primary-accent)]">{{ v.title }}</td>
+                            <td class="px-4 py-3 hidden sm:table-cell text-gray-600">{{ v.vehicle_type }}</td>
+                            <td class="px-4 py-3 font-mono text-sm text-gray-700">{{ v.vehicle_number }}</td>
+                            <td class="px-4 py-3 hidden md:table-cell text-gray-600">{{ v.model_name }} ({{ v.model_year }})</td>
+                            <td class="px-4 py-3 hidden lg:table-cell text-gray-600">{{ v.vin }}</td>
+                            <td class="px-4 py-3 hidden sm:table-cell text-gray-600">{{ v.owner.owner }}</td>
+                            <td class="px-4 py-3 text-center space-x-3 whitespace-nowrap">
+                                <a href="?edit={{ v.id }}" class="text-blue-500 hover:text-blue-700 font-medium transition duration-150 p-2 rounded-lg inline-flex items-center text-sm hover:bg-blue-50">
+                                    <i class="fa-solid fa-pen mr-2"></i> Edit
+                                </a>
+                                <a href="{% url 'delete_vehicle' v.id %}" class="text-red-500 hover:text-red-700 font-medium transition duration-150 p-2 rounded-lg inline-flex items-center text-sm hover:bg-red-50"
+                                   onclick="return confirm('Are you sure you want to delete the vehicle {{ v.vehicle_number }}?');">
+                                    <i class="fa-solid fa-trash mr-2"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center p-8 bg-white rounded-lg border-dashed border-2 border-gray-300 shadow-inner">
+                <i class="fa-solid fa-car-crash text-6xl text-gray-400 mb-4"></i>
+                <p class="text-gray-600 text-lg font-medium">No vehicles found yet. Use the registration form above to add one! 🚗</p>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <script>
+        // JS Function to update the title based on vehicle type
+        function updateTitle() {
+          const type = document.getElementById("vehicle-type").value;
+          const titleField = document.getElementById("vehicle-title");
+          const titleMap = {
+            SUV: "Family SUV",
+            Sedan: "Premium Sedan",
+            Hatchback: "City Commuter",
+            Bike: "College Bike",
+            Auto: "Daily Delivery",
+            Truck: "Heavy Hauler"
+          };
+          titleField.value = titleMap[type] || "";
+        }
+        
+        // Initial call to set title if a vehicle is being edited
+        document.addEventListener('DOMContentLoaded', updateTitle);
+    </script>
+</body>
+</html>

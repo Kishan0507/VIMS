@@ -1,0 +1,202 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Vehicle - VIMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- VIMS Enhanced Light Theme Variables --- */
+        :root {
+            --primary-dark: #1f2937; /* Dark Slate for text */
+            --primary-accent: #1579E7; /* Stronger, more vibrant blue */
+            --primary-hover: #115FBC; /* Darker on hover */
+            --background-base: #f7f7f9; /* Soft background */
+            --card-surface: #ffffff;
+            --shadow-subtle: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-base);
+            color: var(--primary-dark);
+            min-height: 100vh;
+        }
+
+        /* --- Custom Components --- */
+        .card-panel {
+            background-color: var(--card-surface);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-subtle);
+            transition: transform 0.3s ease;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Input Focus Ring Enhancement */
+        .form-input-focus {
+            transition: all 0.3s ease;
+            border-color: #d1d5db;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            border: 1px solid #d1d5db;
+        }
+
+        .form-input-focus:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 3px rgba(21, 121, 231, 0.25);
+        }
+
+        /* Primary Button Style (Update) */
+        .btn-primary-cta {
+            background-color: var(--primary-accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(21, 121, 231, 0.4);
+        }
+        .btn-primary-cta:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(21, 121, 231, 0.6);
+        }
+
+        /* Secondary Button Style (Cancel) */
+        .btn-secondary-cancel {
+            background-color: #e5e7eb;
+            color: var(--primary-dark);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary-cancel:hover {
+            background-color: #d1d5db;
+        }
+        
+        /* Fade-in Animation */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <header class="bg-white shadow-lg">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/explore/" class="flex items-center space-x-3">
+                <svg class="h-9 w-9 text-[var(--primary-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span class="text-2xl font-extrabold text-[var(--primary-dark)]">VIMS</span>
+            </a>
+            <a href="/vehicles/" class="text-md text-[var(--primary-accent)] hover:text-[var(--primary-hover)] font-semibold transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Back to Vehicles
+            </a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-6 md:p-10 flex justify-center">
+        <div class="card-panel max-w-2xl w-full fade-in">
+            <h2 class="text-3xl font-extrabold text-[var(--primary-accent)] mb-6 border-b border-gray-200 pb-3">
+                <i class="fa-solid fa-pen-to-square mr-2"></i> Edit Vehicle Details
+            </h2>
+
+            <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% csrf_token %}
+
+                <div>
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" id="title" name="title" class="form-input-focus" value="{{ vehicle.title }}" required />
+                </div>
+
+                <div>
+                    <label for="vehicle_type" class="form-label">Vehicle Type</label>
+                    <select id="vehicle_type" name="vehicle_type" class="form-input-focus" required>
+                        <option value="">Select type</option>
+                        {% for type in vehicle_types %}
+                            <option value="{{ type }}" {% if vehicle.vehicle_type == type %}selected{% endif %}>{{ type }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="vehicle_number" class="form-label">Vehicle Number</label>
+                    <input type="text" id="vehicle_number" name="vehicle_number"
+                           class="form-input-focus"
+                           value="{{ vehicle.vehicle_number }}"
+                           pattern="^[A-Z]{2}-\d{2}-[A-Z]{1,2}-\d{4}$"
+                           title="Format must be like KA-03-A-2882 or KA-01-AB-1234"
+                           required />
+                </div>
+
+                <div>
+                    <label for="model_name" class="form-label">Model Name</label>
+                    <input type="text" id="model_name" name="model_name" class="form-input-focus" value="{{ vehicle.model_name }}" required />
+                </div>
+
+                <div>
+                    <label for="model_year" class="form-label">Model Year</label>
+                    <input type="number" id="model_year" name="model_year" 
+                           class="form-input-focus" 
+                           value="{{ vehicle.model_year }}" 
+                           min="1900"
+                           max="{% now 'Y' %}"
+                           placeholder="YYYY"
+                           required />
+                </div>
+
+                <div>
+                    <label for="vin" class="form-label">VIN (10 Characters)</label>
+                    <input type="text" id="vin" name="vin"
+                           class="form-input-focus"
+                           value="{{ vehicle.vin }}"
+                           pattern="^[A-HJ-NPR-Z0-9]{10}$"
+                           title="VIN must be exactly 10 alphanumeric characters (no I, O, Q)"
+                           required />
+                </div>
+
+                <div class="md:col-span-2">
+                    <label for="owner" class="form-label">Owner</label>
+                    <select id="owner" name="owner" class="form-input-focus" required>
+                        <option value="">Select an owner</option>
+                        {% for owner in owners %}
+                            <option value="{{ owner.id }}" {% if vehicle.owner.id == owner.id %}selected{% endif %}>{{ owner.owner }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="md:col-span-2 flex justify-end space-x-3 pt-4">
+                    <a href="/vehicles/" class="btn-secondary-cancel flex items-center gap-2">
+                        <i class="fa-solid fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn-primary-cta flex items-center gap-2">
+                        <i class="fa-solid fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

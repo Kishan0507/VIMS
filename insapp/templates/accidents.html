@@ -1,0 +1,263 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accident Management - VIMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- VIMS Enhanced Light Theme Variables --- */
+        :root {
+            --primary-dark: #1f2937; /* Dark Slate for text */
+            --primary-accent: #1579E7; /* Stronger, more vibrant blue */
+            --primary-hover: #115FBC; /* Darker on hover */
+            --background-base: #f7f7f9; /* Soft background */
+            --card-surface: #ffffff;
+            --shadow-subtle: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-base);
+            color: var(--primary-dark);
+            min-height: 100vh;
+        }
+
+        /* --- Custom Components --- */
+        .card-panel {
+            background-color: var(--card-surface);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-subtle);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Input/Select/Textarea Focus Ring Enhancement */
+        .form-input-focus {
+            transition: all 0.3s ease;
+            border-color: #d1d5db;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            border: 1px solid #d1d5db;
+        }
+
+        .form-input-focus:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 3px rgba(21, 121, 231, 0.25);
+        }
+
+        /* Primary Button Style */
+        .btn-cta {
+            background-color: var(--primary-accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(21, 121, 231, 0.4);
+        }
+        .btn-cta:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Photo Upload Area (UI-only) */
+        .photo-upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+        .photo-upload-area:hover {
+            border-color: var(--primary-accent);
+            background-color: #f0f8ff;
+        }
+
+        /* Alert Styling */
+        .alert {
+            padding: 1rem 2.5rem;
+            margin: 1rem auto;
+            border-radius: 0.5rem;
+            border-left-width: 0.5rem;
+            font-weight: 500;
+            max-width: 800px;
+        }
+
+        /* Fade-in Animation */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <header class="bg-white shadow-lg">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="{% url 'explore' %}" class="flex items-center space-x-3">
+                <svg class="h-9 w-9 text-[var(--primary-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span class="text-2xl font-extrabold text-[var(--primary-dark)]">VIMS</span>
+            </a>
+            <a href="{% url 'explore' %}" class="text-md text-[var(--primary-accent)] hover:text-[var(--primary-hover)] font-semibold transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </nav>
+    </header>
+
+    {% if messages %}
+        <div class="mb-8">
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}" 
+                 {% if message.tags == 'success' %}
+                   style="border-color: #059669; background-color: #d1fae5; color: #065f46;"
+                 {% elif message.tags == 'warning' %}
+                   style="border-color: #f59e0b; background-color: #fef3c7; color: #b45309;"
+                 {% elif message.tags == 'error' %}
+                   style="border-color: #ef4444; background-color: #fee2e2; color: #991b1b;"
+                 {% endif %}>
+                {{ message }}
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+    <main class="container mx-auto p-6 md:p-10">
+        <h1 class="text-3xl font-extrabold text-[var(--primary-dark)] mb-8">
+            <i class="fa-solid fa-car-crash text-red-500 mr-3"></i> Accident Management
+        </h1>
+
+        <div class="card-panel mb-10 fade-in">
+            <h2 class="text-xl font-semibold text-[var(--primary-accent)] mb-4 border-b border-gray-200 pb-3">
+                1. Select Policy Holder and Vehicle
+            </h2>
+            <form method="GET" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="owner-select" class="form-label">Owner</label>
+                    <select name="owner" id="owner-select" class="form-input-focus" onchange="this.form.submit()">
+                        <option value="">Choose an owner</option>
+                        {% for owner in owners %}
+                            <option value="{{ owner.id }}" {% if owner.id|stringformat:"s" == selected_owner_id %}selected{% endif %}>
+                                {{ owner.owner }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div {% if not selected_owner_id %}class="opacity-50 pointer-events-none"{% endif %}>
+                    <label for="vehicle-select" class="form-label">Vehicle (for selected owner)</label>
+                    {% if vehicles %}
+                        <select name="vehicle" id="vehicle-select" class="form-input-focus" onchange="this.form.submit()" {% if not selected_owner_id %}disabled{% endif %}>
+                            <option value="">Choose a vehicle</option>
+                            {% for vehicle in vehicles %}
+                                <option value="{{ vehicle.id }}" {% if vehicle.id|stringformat:"s" == selected_vehicle_id %}selected{% endif %}>
+                                    {{ vehicle.title }} - {{ vehicle.vehicle_number }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <input type="text" value="No vehicles registered for this owner" class="form-input-focus bg-gray-100 cursor-not-allowed text-sm text-red-600" disabled>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+
+        {% if selected_owner_id and selected_vehicle_id %}
+        <div class="card-panel mb-8 fade-in" style="animation-delay: 0.1s;">
+            <h2 class="text-2xl font-extrabold text-red-500 mb-6 border-b border-gray-200 pb-3">
+                <i class="fa-solid fa-clipboard-list mr-2"></i> Report Incident Details
+            </h2>
+
+            <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% csrf_token %}
+                <input type="hidden" name="owner" value="{{ selected_owner_id }}" />
+                <input type="hidden" name="vehicle" value="{{ selected_vehicle_id }}" />
+
+                <div class="md:col-span-2">
+                    <label class="form-label">Policy <span class="text-xs text-gray-500">(Mandatory)</span></label>
+                    {% if policies %}
+                        <select name="policy" class="form-input-focus" required>
+                            <option value="">Select an active policy</option>
+                            {% for policy in policies %}
+                                <option value="{{ policy.id }}" 
+                                    {% if policy.accident_claimed %}disabled class="text-red-500"{% endif %}>
+                                    {{ policy.policy_number }} - {{ policy.policy_type }} 
+                                    {% if policy.accident_claimed %}(Already Claimed){% endif %}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <p class="text-sm text-red-600 font-medium p-3 border border-red-300 rounded-lg bg-red-50">
+                            <i class="fa-solid fa-circle-exclamation mr-1"></i> No active policies found for this vehicle.
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="accident-date" class="form-label">Date of Accident</label>
+                    <input type="date" id="accident-date" name="date_of_accident" class="form-input-focus" required />
+                </div>
+
+                <div>
+                    <label for="accident-location" class="form-label">Location</label>
+                    <input type="text" id="accident-location" name="location" class="form-input-focus"
+                             placeholder="e.g., MG Road, Bengaluru" required />
+                </div>
+
+                <div class="md:col-span-2">
+                    <label for="accident-description" class="form-label">Description</label>
+                    <textarea id="accident-description" name="description" rows="4" class="form-input-focus"
+                              placeholder="Briefly describe the incident and damages..." required></textarea>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="form-label">Photos (Optional Proof)</label>
+                    <div class="photo-upload-area">
+                        <i class="fa-solid fa-camera text-4xl text-gray-400 mb-2"></i>
+                        <p class="text-gray-500 font-medium">Drag & drop accident photos here</p>
+                        <p class="text-xs text-gray-400 mt-1">
+                            (This feature is currently for UI demonstration only. Files will not be saved to the database.)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2 flex justify-end pt-4">
+                    <button type="submit" class="btn-cta bg-red-600 hover:bg-red-800 flex items-center gap-2">
+                        <i class="fa-solid fa-flag"></i> Report Accident
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+       
+        {% else %}
+        <div class="card-panel text-center p-10 mt-8 fade-in">
+            <i class="fa-solid fa-hand-point-up text-6xl text-gray-400 mb-4"></i>
+            <h2 class="text-xl font-semibold text-gray-600">Please select an **Owner** and a **Vehicle** above to report an accident.</h2>
+        </div>
+        {% endif %}
+    </main>
+</body>
+</html>

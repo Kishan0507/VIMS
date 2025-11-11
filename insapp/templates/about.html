@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About VIMS - Vehicle Insurance Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- VIMS Enhanced Light Theme Variables --- */
+        :root {
+            --primary-dark: #1f2937; /* Dark text */
+            --primary-accent: #3b82f6; /* Tailwind Blue 500 */
+            --secondary-dark: #f0f4f8; /* Soft background */
+            --card-surface: #ffffff; /* Card background */
+            --shadow-subtle: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--secondary-dark);
+            color: var(--primary-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Custom Styles --- */
+        .content-card {
+            background-color: var(--card-surface);
+            padding: 3rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-subtle);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-lg">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center fade-in" style="animation-delay: 0.1s;">
+            <a href="#" class="flex items-center space-x-3">
+                <svg class="h-9 w-9 text-[var(--primary-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span class="text-2xl font-extrabold text-[var(--primary-dark)]">VIMS</span>
+            </a>
+            <a href="#" class="text-md text-[var(--primary-accent)] hover:text-blue-700 font-semibold transition flex items-center gap-2">
+                
+            </a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-8 md:p-12 flex-grow">
+        <div class="content-card max-w-4xl mx-auto fade-in" style="animation-delay: 0.3s;">
+            <h1 class="text-4xl font-extrabold text-[var(--primary-dark)] mb-6 border-b pb-4">
+                <i class="fa-solid fa-circle-info text-[var(--primary-accent)] mr-3"></i> About VIMS
+            </h1>
+            
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-700 mb-3">Our Mission</h2>
+                <p class="text-gray-600 mb-4">
+                    The Vehicle Information Management System (VIMS) is designed to streamline the management of vehicle data, owner information, and insurance policies. Our primary mission is to provide an efficient and **user-friendly platform** for tracking and maintaining vehicle-related records in a secure, digital environment.
+                </p>
+                <p class="text-gray-600 border-l-4 border-yellow-500 pl-4 py-2 italic text-sm">
+                    "Simplifying vehicle data management for accuracy and efficiency."
+                </p>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-700 mb-4">Core Features</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
+                    <div class="flex items-start gap-3 bg-gray-50 p-3 rounded-lg">
+                        <i class="fa-solid fa-database text-xl text-green-500 mt-1"></i>
+                        <p class="text-sm">Centralized database for Owners, Vehicles, and Policies.</p>
+                    </div>
+                    <div class="flex items-start gap-3 bg-gray-50 p-3 rounded-lg">
+                        <i class="fa-solid fa-pen-to-square text-xl text-blue-500 mt-1"></i>
+                        <p class="text-sm">Easy Registration and Update tools for all entity types.</p>
+                    </div>
+                    <div class="flex items-start gap-3 bg-gray-50 p-3 rounded-lg">
+                        <i class="fa-solid fa-car-crash text-xl text-red-500 mt-1"></i>
+                        <p class="text-sm">Detailed Accident Logging and policy claim tracking.</p>
+                    </div>
+                    <div class="flex items-start gap-3 bg-gray-50 p-3 rounded-lg">
+                        <i class="fa-solid fa-chart-line text-xl text-purple-500 mt-1"></i>
+                        <p class="text-sm">Dashboard Analytics and Visual Reporting.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t pt-4 mt-6">
+                <p class="text-base text-gray-700 font-medium">
+                    For more information or technical support, please contact our team.
+                </p>
+                <p class="text-lg font-bold text-[var(--primary-accent)] mt-1">
+                    support@vims-dbms.com
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white text-gray-600 text-center py-4 mt-auto border-t border-gray-200">
+        <p class="text-sm tracking-wide">
+            &copy; <span id="year"></span> Vehicle Insurance Management System (VIMS). All rights reserved.
+        </p>
+    </footer>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
