@@ -18,6 +18,17 @@ The application features a modern, clean, and fully responsive user interface bu
 
 ---
 
+## 🔌 REST API Integration: News Feed
+
+The project integrates with an external RESTful API to provide real-time, relevant news articles on the `/news/` page.
+
+| API Service | Integration Point | Purpose |
+| :--- | :--- | :--- |
+| **News API** | `insapp/news.py` (or similar utility file) | Fetches the latest global news related to accidents, insurance, or the automotive industry to populate the user-facing News Feed. |
+| **Requirement** | API Key | The external function (`fetch_accident_news`) requires a valid API key to operate, typically stored securely in environment variables or Django settings. |
+
+---
+
 ## 🛠️ Technology Stack
 
 | Area | Technology | Purpose |
@@ -50,10 +61,10 @@ python -m venv env
 .\env\Scripts\activate  # Windows
 # source env/bin/activate # Linux/macOS
 3. Install DependenciesInstall all required Python packages (ensure you have a requirements.txt file):Bashpip install -r requirements.txt
-4. Database InitializationCreate the necessary database tables:Bashpython manage.py makemigrations
-python manage.py migrate
+4. Database InitializationApply migrations to create the database structure:Bashpython manage.py makemigrations
+python manage.manage.py migrate
 🧪 Seeding the Database (Optional)To quickly populate the system with dummy data owned by a single test user:Open the Django shell:Bashpython manage.py shell
-Import the seeder function (assuming it's in insapp/seeder.py):Pythonfrom insapp.seeder import seed_database_single_user
+Import and run the seeding function (assuming it's in insapp/seeder.py):Pythonfrom insapp.seeder import seed_database_single_user
 seed_database_single_user(num_owners=5, vehicles_per_owner=2)
 exit()
 Access Credentials (Test User)UsernamePasswordtestuserpassword123▶️ Running the ApplicationStart the local development server:Bashpython manage.py runserver
