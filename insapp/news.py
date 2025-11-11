@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def _get_api_key() -> Optional[str]:
-    return getattr(settings, "NEWS_API_KEY", None) or os.getenv("NEWS_API_KEY","9895a50ea55c4606bbe88d393ebc0acc")
+    return getattr(settings, "NEWS_API_KEY", None) or os.getenv("NEWS_API_KEY","YOUR_API_KEY")
 
 
 def fetch_accident_news(limit: int = 10) -> List[Dict]:
