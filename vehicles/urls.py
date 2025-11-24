@@ -41,6 +41,7 @@ urlpatterns = [
     path('about/', views.about_view, name='about'),
     path('contact/', views.contact_view, name='contact'),
     path('explore/', views.explore, name='explore'),
+    path('filter/', views.filter_view, name='filter_view'),
 ]
 
 # Serve static and media files during development

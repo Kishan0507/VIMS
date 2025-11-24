@@ -635,3 +635,42 @@ def about_view(request):
 #------------------- CONTACT  -------------------
 def contact_view(request):
     return render(request, "contact.html")
+
+
+
+
+#------------------- FILTER  -------------------
+@login_required
+def filter_view(request):
+
+    today = timezone.now().date()
+
+ 
+    time_range = request.GET.get("time_range")   
+    owner_search = request.GET.get("owner_search") 
+    
+
+  
+    accidents = Accident.objects.all()
+
+   
+    if time_range == "10":
+        accidents = accidents.filter(date_of_accident__gte=today - timedelta(days=10))
+    elif time_range == "100":
+        accidents = accidents.filter(date_of_accident__gte=today - timedelta(days=100))
+    elif time_range == "365":
+        accidents = accidents.filter(date_of_accident__gte=today - timedelta(days=365))
+    elif time_range == "3650":
+        accidents = accidents.filter(date_of_accident__gte=today - timedelta(days=3650))
+
+ 
+    if owner_search:
+        accidents = accidents.filter(owner__owner__icontains=owner_search)
+
+    context = {
+        "accidents": accidents,                 
+        "all_accidents": Accident.objects.all(), 
+        "selected_range": time_range,          
+        "owner_search": owner_search,          
+    }
+    return render(request, "filter.html", context)

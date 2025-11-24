@@ -1,0 +1,309 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accident History - VIMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- VIMS Enhanced Theme --- */
+        :root {
+            --primary-dark: #0f172a;
+            --primary-accent: #2563eb; /* A slightly deeper blue */
+            --primary-hover: #1d4ed8;
+            --background-base: #f1f5f9;
+            --card-surface: #ffffff;
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-base);
+            color: var(--primary-dark);
+        }
+
+        /* --- Components --- */
+        .card-panel {
+            background-color: var(--card-surface);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-card);
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.65rem 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Buttons */
+        .btn-cta {
+            background-color: var(--primary-accent);
+            color: white;
+            padding: 0.65rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-cta:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
+
+        .btn-secondary {
+            background-color: white;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            padding: 0.65rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover { background-color: #f1f5f9; color: #0f172a; }
+
+        /* Table Styling */
+        .data-table th {
+            padding: 0.875rem 1rem;
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .data-table td { 
+            padding: 1rem; 
+            border-bottom: 1px solid #f1f5f9; 
+            vertical-align: middle;
+        }
+        .data-table tr:hover { background-color: #f8fafc; }
+        .data-table tr:last-child td { border-bottom: none; }
+
+        /* Navigation Items */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+            transition: all 0.2s;
+        }
+        .nav-item:hover { background-color: #eff6ff; color: var(--primary-accent); }
+        .nav-item.active {
+            background-color: var(--primary-accent);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.625rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-active { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .badge-lapsed { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; opacity: 0; transform: translateY(10px); }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+
+<body class="min-h-screen pb-12">
+ <header class="bg-white shadow-lg">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/explore/" class="flex items-center space-x-3">
+                <svg class="h-9 w-9 text-[var(--primary-accent)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span class="text-2xl font-extrabold text-[var(--primary-dark)]">VIMS</span>
+            </a>
+            <a href="/explore/" class="text-md text-[var(--primary-accent)] hover:text-[var(--primary-hover)] font-semibold transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 md:px-8 max-w-7xl mt-8">
+        
+        <div class="mb-8 fade-in">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Accident History</h1>
+            <p class="text-gray-500 mt-1">Search records, view history, and monitor policy status.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+            <aside class="lg:col-span-1 space-y-6">
+                <div class="card-panel sticky top-24 fade-in" style="animation-delay: 0.1s;">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wide">Time Filter</h2>
+                        {% if selected_range %}
+                        <a href="{% url 'filter_view' %}" class="text-xs text-red-500 hover:text-red-700 font-medium">Clear</a>
+                        {% endif %}
+                    </div>
+                    
+                    <nav class="space-y-1">
+                        {% with params=request.GET.urlencode %}
+                        <a href="{% url 'filter_view' %}?time_range=10{% if owner_search %}&owner_search={{ owner_search }}{% endif %}{% if status_search %}&status={{ status_search }}{% endif %}"
+                           class="nav-item {% if selected_range == '10' %}active{% endif %}">
+                            <i class="fa-solid fa-calendar-week w-6 text-center"></i> 10 Days
+                        </a>
+                        <a href="{% url 'filter_view' %}?time_range=100{% if owner_search %}&owner_search={{ owner_search }}{% endif %}{% if status_search %}&status={{ status_search }}{% endif %}"
+                           class="nav-item {% if selected_range == '100' %}active{% endif %}">
+                            <i class="fa-regular fa-calendar-days w-6 text-center"></i> 100 Days
+                        </a>
+                        <a href="{% url 'filter_view' %}?time_range=365{% if owner_search %}&owner_search={{ owner_search }}{% endif %}{% if status_search %}&status={{ status_search }}{% endif %}"
+                           class="nav-item {% if selected_range == '365' %}active{% endif %}">
+                            <i class="fa-solid fa-calendar w-6 text-center"></i> 1 Year
+                        </a>
+                        <a href="{% url 'filter_view' %}?time_range=3650{% if owner_search %}&owner_search={{ owner_search }}{% endif %}{% if status_search %}&status={{ status_search }}{% endif %}"
+                           class="nav-item {% if selected_range == '3650' %}active{% endif %}">
+                            <i class="fa-solid fa-history w-6 text-center"></i> All Time
+                        </a>
+                        {% endwith %}
+                    </nav>
+                </div>
+            </aside>
+
+            <div class="lg:col-span-3 space-y-6">
+
+                <div class="card-panel fade-in" style="animation-delay: 0.2s;">
+                    <form method="GET" action="{% url 'filter_view' %}" class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                        
+                        <div class="md:col-span-6">
+                            <label for="owner_search" class="form-label">Search Owner / Vehicle</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"></i>
+                                <input id="owner_search" name="owner_search" type="text" 
+                                       placeholder="e.g. Kishan, KA-01..."
+                                       value="{{ owner_search|default:'' }}"
+                                       class="form-input pl-10">
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-3">
+                            <label for="status_search" class="form-label">Policy Status</label>
+                            <select id="status_search" name="status" class="form-select">
+                                <option value="" {% if not status_search %}selected{% endif %}>All Statuses</option>
+                                <option value="Active" {% if status_search == 'Active' %}selected{% endif %}>Active</option>
+                                <option value="Lapsed" {% if status_search == 'Lapsed' %}selected{% endif %}>Lapsed</option>
+                            </select>
+                        </div>
+
+                        {% if selected_range %}
+                        <input type="hidden" name="time_range" value="{{ selected_range }}">
+                        {% endif %}
+
+                        <div class="md:col-span-3 flex gap-2">
+                            <button class="btn-cta w-full" type="submit">Filter</button>
+                            <a href="{% url 'filter_view' %}" class="btn-secondary px-3" title="Reset Filters">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-panel fade-in" style="animation-delay: 0.3s;">
+                    <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-4">
+                        <h2 class="font-bold text-gray-800 flex items-center gap-2">
+                            {% if owner_search or selected_range or status_search %}
+                                <i class="fa-solid fa-list-check text-[var(--primary-accent)]"></i> Search Results
+                            {% else %}
+                                <i class="fa-solid fa-list text-gray-500"></i> Recent Accidents
+                            {% endif %}
+                        </h2>
+                        <span class="bg-gray-100 text-gray-600 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-gray-200">
+                            {{ accidents|length }} Records
+                        </span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="data-table w-full text-sm">
+                            <thead>
+                                <tr>
+                                    <th>Date</th> <th>Owner Name</th>
+                                    <th>Vehicle Number</th>
+                                    <th>Policy Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white">
+                                {% for acc in accidents %}
+                                <tr>
+                                    <td class="text-gray-500 whitespace-nowrap">
+                                        <i class="fa-regular fa-clock mr-1 text-gray-300"></i>
+                                        {{ acc.accident_date|date:"M d, Y"|default:"N/A" }}
+                                    </td>
+                                    <td class="font-medium text-gray-900">{{ acc.owner.owner }}</td>
+                                    <td class="font-mono text-gray-600 bg-gray-50 px-2 py-1 rounded w-fit text-xs">{{ acc.vehicle.vehicle_number }}</td>
+                                    <td>
+                                        {% if acc.policy_status == 'Active' %}
+                                            <span class="badge badge-active"><i class="fa-solid fa-check-circle mr-1.5"></i>Active</span>
+                                        {% else %}
+                                            <span class="badge badge-lapsed"><i class="fa-solid fa-circle-exclamation mr-1.5"></i>Lapsed</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-right">
+                                        <button class="text-gray-400 hover:text-[var(--primary-accent)] transition">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-12">
+                                        <div class="flex flex-col items-center justify-center text-gray-400">
+                                            <div class="bg-gray-50 p-4 rounded-full mb-3">
+                                                <i class="fa-solid fa-magnifying-glass text-2xl text-gray-300"></i>
+                                            </div>
+                                            <p class="font-medium text-gray-600">No records found</p>
+                                            <p class="text-xs mt-1">Try adjusting your filters or search terms.</p>
+                                            <a href="{% url 'filter_view' %}" class="text-blue-600 text-xs mt-3 font-semibold hover:underline">Clear all filters</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {% if not owner_search and not selected_range and not status_search %}
+                    <div class="text-center mt-8">
+                        <p class="text-xs text-gray-400 uppercase tracking-widest">End of Recent History</p>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </main>
+</body>
+</html>
